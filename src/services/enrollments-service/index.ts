@@ -1,5 +1,5 @@
 import { request } from "@/utils/request";
-import { notFoundError, requestError } from "@/errors";
+import { notFoundError } from "@/errors";
 import addressRepository, { CreateAddressParams } from "@/repositories/address-repository";
 import enrollmentRepository, { CreateEnrollmentParams } from "@/repositories/enrollment-repository";
 import { exclude } from "@/utils/prisma-utils";
@@ -14,7 +14,7 @@ async function getAddressFromCEP(cep: string) {
 
   const data = result.data;
 
-  return {bairro: data.bairro, cidade: data.localidade, complemento: data.complemento, logradouro: data.logradouro, uf: data.uf};
+  return { bairro: data.bairro, cidade: data.localidade, complemento: data.complemento, logradouro: data.logradouro, uf: data.uf };
 }
 
 async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddressByUserIdResult> {
