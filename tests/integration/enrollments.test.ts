@@ -86,7 +86,11 @@ describe("GET /enrollments/cep", () => {
     expect(response.status).toBe(httpStatus.OK);
     expect(response.body).toEqual(address);
   });
+<<<<<<< HEAD
   it("should respond with status 204 when CEP is invalid.", async () => {
+=======
+  it("should respond with status 204 when CEP is invalid", async () => {
+>>>>>>> 37c1102d7f1349f679ba1046f56e480624bbbc6b
     const response = await server.get("/enrollments/cep?cep=00");
 
     expect(response.status).toBe(httpStatus.NO_CONTENT);
@@ -194,7 +198,11 @@ describe("POST /enrollments", () => {
         birthday: faker.date.past().toISOString(),
         phone: "(21) 98999-9999",
         address: {
+<<<<<<< HEAD
           cep: "00000-000",
+=======
+          cep: "0",
+>>>>>>> 37c1102d7f1349f679ba1046f56e480624bbbc6b
           street: faker.address.streetName(),
           city: faker.address.city(),
           number: faker.datatype.number().toString(),
@@ -204,7 +212,11 @@ describe("POST /enrollments", () => {
         },
       });
 
+<<<<<<< HEAD
       it("should respond with status 400 when body is invalid.", async () => {
+=======
+      it("should respond with status 400 when cep is invalid", async () => {
+>>>>>>> 37c1102d7f1349f679ba1046f56e480624bbbc6b
         const body = generateInvalidBody();
         const token = await generateValidToken();
 
