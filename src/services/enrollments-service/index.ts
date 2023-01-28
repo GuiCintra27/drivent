@@ -1,6 +1,4 @@
 import { request } from "@/utils/request";
-import { AddressEnrollment } from "@/protocols";
-import { getAddress } from "@/utils/cep-service";
 import { notFoundError } from "@/errors";
 import addressRepository, { CreateAddressParams } from "@/repositories/address-repository";
 import enrollmentRepository, { CreateEnrollmentParams } from "@/repositories/enrollment-repository";
