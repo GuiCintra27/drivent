@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 
 export async function getTicketTypes(req: AuthenticatedRequest, res: Response) {
   try {
-    const ticketTypes =  await ticketsService.findTicketType();
+    const ticketTypes = await ticketsService.findTicketType();
 
     return res.status(httpStatus.OK).send(ticketTypes);
   } catch (error) {

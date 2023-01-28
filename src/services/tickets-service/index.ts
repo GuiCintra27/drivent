@@ -15,7 +15,7 @@ async function findTicket(userId: number): Promise<Ticket[]> {
   if (!enrollment) throw notFoundError();
 
   const tickets = await ticketsRepository.find(enrollment.id);
-  
+
   return tickets;
 }
 
