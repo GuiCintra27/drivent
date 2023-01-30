@@ -20,7 +20,7 @@ export async function getPayment(req: AuthenticatedRequest, res: Response) {
   }
 }
 
-export async function postPayment(req: AuthenticatedRequest, res: Response) {
+export async function paymentProcess(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
   const { ticketId, cardData } = req.body;
   const paymentData = {
