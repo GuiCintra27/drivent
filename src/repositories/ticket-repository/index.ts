@@ -15,7 +15,6 @@ async function findTickeyById(ticketId: number) {
     }
   });
 }
-
 async function findTickeWithTypeById(ticketId: number) {
   return prisma.ticket.findFirst({
     where: {
