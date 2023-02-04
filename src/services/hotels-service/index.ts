@@ -43,9 +43,7 @@ async function haveEnrollmentAndTicket (userId: number): Promise<void>{
     throw notFoundError();
   }
 
-  console.log("Is remote: ", ticket.TicketType.isRemote, " / Includes hotel: ", !ticket.TicketType.includesHotel, " / Ticket paid: ", ticket.status !== "PAID")
-
-  if(ticket.TicketType.isRemote || !ticket.TicketType.includesHotel || ticket.status !== "PAID"){
+  if(ticket.TicketType.isRemote === true || !ticket.TicketType.includesHotel === true || ticket.status !== "PAID"){
     throw paymentError("The payment was not effetued or ticketType not includes hotel");
   }
 }
