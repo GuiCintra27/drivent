@@ -4,7 +4,7 @@ import { TicketStatus } from "@prisma/client";
 import httpStatus from "http-status";
 import * as jwt from "jsonwebtoken";
 import supertest from "supertest";
-import { createEnrollmentWithAddress, createUser, createTicketType, createTicket } from "../factories";
+import { createEnrollmentWithAddress, createUser, createTicketTypeWithParams, createTicket } from "../factories";
 import { createHotel, createHotelWithRooms } from "../factories/hotels-factory";
 import { cleanDb, generateValidToken } from "../helpers";
 
@@ -65,7 +65,7 @@ describe("GET /hotels", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(true, false);
+      const ticketType = await createTicketTypeWithParams(true, false);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
 
       const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
@@ -77,7 +77,7 @@ describe("GET /hotels", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, false);
+      const ticketType = await createTicketTypeWithParams(false, false);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
 
       const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
@@ -89,7 +89,7 @@ describe("GET /hotels", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, true);
+      const ticketType = await createTicketTypeWithParams(false, true);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
 
       const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
@@ -101,7 +101,7 @@ describe("GET /hotels", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, true);
+      const ticketType = await createTicketTypeWithParams(false, true);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const hotel = await createHotel();
 
@@ -166,7 +166,7 @@ describe("GET /hotels/:hotelId", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(true, false);
+      const ticketType = await createTicketTypeWithParams(true, false);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
 
       const response = await server.get("/hotels/1").set("Authorization", `Bearer ${token}`);
@@ -178,7 +178,7 @@ describe("GET /hotels/:hotelId", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, false);
+      const ticketType = await createTicketTypeWithParams(false, false);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
 
       const response = await server.get("/hotels/1").set("Authorization", `Bearer ${token}`);
@@ -190,19 +190,7 @@ describe("GET /hotels/:hotelId", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, true);
-      await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
-
-      const response = await server.get("/hotels/1").set("Authorization", `Bearer ${token}`);
-
-      expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
-    });
-
-    it("should respond with status 402 when ticket is not paid", async () => {
-      const user = await createUser();
-      const token = await generateValidToken(user);
-      const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, true);
+      const ticketType = await createTicketTypeWithParams(false, true);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
 
       const response = await server.get("/hotels/1").set("Authorization", `Bearer ${token}`);
@@ -214,10 +202,10 @@ describe("GET /hotels/:hotelId", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, true);
+      const ticketType = await createTicketTypeWithParams(false, true);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
 
-      const response = await server.get("/hotels/1").set("Authorization", `Bearer ${token}`);
+      const response = await server.get("/hotels/2").set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(httpStatus.NOT_FOUND);
     });
@@ -226,11 +214,11 @@ describe("GET /hotels/:hotelId", () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, true);
+      const ticketType = await createTicketTypeWithParams(false, true);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const hotelWithRooms = await createHotelWithRooms();
 
-      const response = await server.get("/hotels/1").set("Authorization", `Bearer ${token}`);
+      const response = await server.get(`/hotels/${hotelWithRooms.id}`).set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(httpStatus.OK);
       expect(response.body).toEqual({

@@ -1,70 +1,23 @@
 import { prisma } from "@/config";
-import { Ticket, TicketStatus } from "@prisma/client";
 
 async function findMany() {
   return prisma.hotel.findMany();
 }
 
-async function findTickeyById(ticketId: number) {
-  return prisma.ticket.findFirst({
+async function findHotelById(hotelId: number) {
+  return prisma.hotel.findUnique({
     where: {
-      id: ticketId,
+      id: hotelId,
     },
     include: {
-      Enrollment: true,
+      Rooms: true
     }
   });
 }
-async function findTickeWithTypeById(ticketId: number) {
-  return prisma.ticket.findFirst({
-    where: {
-      id: ticketId,
-    },
-    include: {
-      TicketType: true,
-    }
-  });
-}
-
-async function findTicketByEnrollmentId(enrollmentId: number) {
-  return prisma.ticket.findFirst({
-    where: {
-      enrollmentId,
-    },
-    include: {
-      TicketType: true, //inner join
-    }
-  });
-}
-
-async function createTicket(ticket: CreateTicketParams) {
-  return prisma.ticket.create({
-    data: {
-      ...ticket,
-    }
-  });
-}
-
-async function ticketProcessPayment(ticketId: number) {
-  return prisma.ticket.update({
-    where: {
-      id: ticketId,
-    },
-    data: {
-      status: TicketStatus.PAID,
-    }
-  });
-}
-
-export type CreateTicketParams = Omit<Ticket, "id" | "createdAt" | "updatedAt">
 
 const hotelsRepository = {
   findMany,
-  findTicketByEnrollmentId,
-  createTicket,
-  findTickeyById,
-  findTickeWithTypeById,
-  ticketProcessPayment,
+  findHotelById
 };
 
 export default hotelsRepository;
