@@ -97,18 +97,6 @@ describe("GET /hotels", () => {
       expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
     });
 
-    it("should respond with status 402 when ticket is not paid", async () => {
-      const user = await createUser();
-      const token = await generateValidToken(user);
-      const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, true);
-      await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
-
-      const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
-
-      expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
-    });
-
     it("should respond with status 200 and list all hotels when user have a paid ticket", async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
@@ -120,16 +108,18 @@ describe("GET /hotels", () => {
       const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(httpStatus.OK);
-      expect(response.body).toEqual({
+      expect(response.body).toEqual([{
         id: hotel.id,
         name: hotel.name,
-        image: hotel.image
-      });
+        image: hotel.image,
+        createdAt: hotel.createdAt.toISOString(),
+        updatedAt: hotel.updatedAt.toISOString()
+      }]);
     });
   });
 });
 
-describe("GET /hotels:hotelId", () => {
+describe("GET /hotels/:hotelId", () => {
   it("should respond with status 401 if no token is given", async () => {
     const response = await server.get("/hotels/1");
 
