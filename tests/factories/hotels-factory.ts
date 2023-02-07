@@ -20,7 +20,7 @@ export async function createHotelWithRooms() {
   const rooms = await prisma.room.create({
     data: {
       name: "101",
-      capacity: 3,
+      capacity: 2,
       hotelId: hotel.id
     }
   });
@@ -28,7 +28,7 @@ export async function createHotelWithRooms() {
   await prisma.room.create({
     data: {
       name: "102",
-      capacity: 3,
+      capacity: 2,
       hotelId: hotel2.id
     }
   });
