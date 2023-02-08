@@ -58,7 +58,7 @@ async function haveEnrollmentAndTicket(userId: number): Promise<void> {
   }
 }
 
-export type BookingBody = {roomId: Number};
+export type BookingBody = {roomId: number};
 
 const bookingService = {
   getBooking,

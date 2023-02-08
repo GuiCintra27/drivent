@@ -8,12 +8,12 @@ async function findBookingByUserId(userId: number) {
   });
 }
 
-async function findRoomById(roomId: number){
+async function findRoomById(roomId: number) {
   return prisma.room.findUnique({
     where: {
       id: roomId
     }
-  })
+  });
 }
 
 async function findRoomUsers(roomId: number) {
@@ -21,7 +21,7 @@ async function findRoomUsers(roomId: number) {
     where: {
       roomId
     }
-  })
+  });
 }
 
 async function createBooking(userId: number, roomId: number) {
@@ -41,7 +41,7 @@ async function updateBooking(bookingId: number, roomId: number) {
     data: {
       roomId
     }
-  })
+  });
 }
 
 const bookingRepository = {
