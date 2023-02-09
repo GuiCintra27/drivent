@@ -31,6 +31,7 @@ export async function createBooking(userId: number, fill: boolean) {
 
 export async function createBookingWithoutUserId(fill?: boolean) {
   const user = await createUser();
+  const user2 = await createUser();
   const hotel = await createHotelWithRooms();
 
   const booking = await prisma.booking.create({
@@ -43,7 +44,7 @@ export async function createBookingWithoutUserId(fill?: boolean) {
   if (fill === true) {
     await prisma.booking.create({
       data: {
-        userId: user.id,
+        userId: user2.id,
         roomId: hotel.Rooms[0].id,
       }
     });
