@@ -106,6 +106,14 @@ describe("POST /booking", () => {
       expect(response.status).toBe(httpStatus.BAD_REQUEST);
     });
 
+    it("should respond with status 404 when there is no enrollment for given user", async () => {
+      const token = await generateValidToken();
+
+      const response = await server.post("/booking").send({ roomId: faker.datatype.number() }).set("Authorization", `Bearer ${token}`);
+
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+
     it("should respond with status 404 when there is no ticket for given user", async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
